@@ -68,6 +68,26 @@ npm test
 npx tsx test/test_tps.ts
 ```
 
+### 5. Docker Deployment
+
+Pull and run the prebuilt multi-arch image from GitHub Container Registry:
+
+```bash
+docker run -d \
+  --name fakeapi-gateway \
+  -p 3000:3000 \
+  --env-file .env \
+  --restart always \
+  ghcr.io/huochai67/fakeapi:latest
+```
+
+Or build locally:
+
+```bash
+docker build -t fakeapi .
+docker run -d -p 3000:3000 --env-file .env fakeapi
+```
+
 ## Environment Variables
 
 | Variable | Description | Default |
