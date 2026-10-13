@@ -17,10 +17,17 @@ export async function forwardToUpstream(options: ProxyOptions): Promise<void> {
   const isStream = Boolean(body.stream);
 
   // Map model to default upstream model if needed
+  // Map model to default upstream model if needed and clamp max tokens
   const upstreamBody: Record<string, unknown> = {
     ...body,
     model: config.defaultModel,
   };
+  if (typeof upstreamBody.max_tokens === 'number' && upstreamBody.max_tokens > 4096) {
+    upstreamBody.max_tokens = 4096;
+  }
+  if (typeof upstreamBody.max_output_tokens === 'number' && upstreamBody.max_output_tokens > 4096) {
+    upstreamBody.max_output_tokens = 4096;
+  }
 
   let targetUrl = '';
   const headers: Record<string, string> = {
